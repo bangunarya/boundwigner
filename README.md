@@ -7,7 +7,7 @@ It also contains the sampling points obtained by Algorithm 1 in the above paper.
 ## Citation:
  ```
  @article{bangun2020tightbound,
-  title={Tight bounds on the mutual coherence of sensing matrices forWigner D-functions on regular grids},
+  title={Tight bounds on the mutual coherence of sensing matrices for Wigner D-functions on regular grids},
   author={Bangun, Arya and Behboodi, Arash and Mathar, Rudolf},
   journal={arXiv preprint arXiv:1904.11596},
   year={2019}
