@@ -1,6 +1,6 @@
 This repository contains the programs for replicating the results of the following paper:
 
-[Tight bounds on the mutual coherence of sensing matrices forWigner D-functions on regular grids](http://arxiv.org/abs/2010.02344)
+[Tight bounds on the mutual coherence of sensing matrices for Wigner D-functions on regular grids](http://arxiv.org/abs/2010.02344)
 
 
 ## Citation:
