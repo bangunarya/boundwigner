@@ -9,8 +9,8 @@ In order to generate all the Figures one can independently run `Figure_1.py`, `F
  ```
  @article{bangun2020tightbound,
   title={Tight bounds on the mutual coherence of sensing matrices for Wigner D-functions on regular grids},
-  author={Bangun, Arya and Behboodi, Arash and Mathar, Rudolf},
+  author={Arya Bangun and Arash Behboodi and Rudolf Mathar},
   journal={arXiv preprint arXiv:1904.11596},
-  year={2019}
+  year={2020}
 }
  
