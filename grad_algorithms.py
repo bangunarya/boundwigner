@@ -16,9 +16,10 @@ from gradient import Gradient
 class GradientAlgorithms:
 
             
-    def __init__(self, matrix, eps, max_iter):
+    def __init__(self, matrix, eps, max_iter, col_comb):
         self.matrix = matrix
         self.eps = eps ## error_tolerance
+        self.col_comb = col_comb
         self.max_iter = max_iter ## Maximum iteration
         
         self.graddescent()
@@ -58,8 +59,8 @@ class GradientAlgorithms:
             ################################################################################################
             if self.matrix.types[1] == 'partial':      
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ## Legendre bound
@@ -88,8 +89,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient SH
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -106,9 +107,9 @@ class GradientAlgorithms:
             else:
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ### Welch bound for universal bound coherence
@@ -136,14 +137,15 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
                         Coh = Coherence(matrix.normA)
                         graddes_ang = angles 
+                        
 
             self.graddes_coh = Coh
             self.graddes_ang = graddes_ang
@@ -167,7 +169,7 @@ class GradientAlgorithms:
             ################################################################################################
             if self.matrix.types[1] == 'partial':      
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -197,7 +199,7 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient SH
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -215,8 +217,8 @@ class GradientAlgorithms:
             else:
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -243,8 +245,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                   
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -275,7 +277,7 @@ class GradientAlgorithms:
             ################################################################################################
             if self.matrix.types[1] == 'partial':      
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                  
 
 
@@ -305,7 +307,7 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient SH
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                    
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -322,8 +324,8 @@ class GradientAlgorithms:
             else:
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -352,15 +354,15 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                      
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
                         Coh = Coherence(matrix.normA)
                         graddes_ang = angles 
-
+                 
             self.graddes_coh = Coh
             self.graddes_ang = graddes_ang
             
@@ -410,8 +412,8 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ## Legendre bound
@@ -464,8 +466,8 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -483,9 +485,9 @@ class GradientAlgorithms:
 
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ### Welch bound for universal bound coherence
@@ -548,9 +550,9 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -577,7 +579,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                
 
 
@@ -630,7 +632,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -649,8 +651,8 @@ class GradientAlgorithms:
 
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
             
 
 
@@ -712,8 +714,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -742,7 +744,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
                 ## Legendre bound
@@ -790,7 +792,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                      
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -808,8 +810,8 @@ class GradientAlgorithms:
 
 
                 ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                  
 
 
@@ -872,8 +874,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi   
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi   
                     
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -918,8 +920,8 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ## Legendre bound
@@ -970,8 +972,8 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -987,9 +989,9 @@ class GradientAlgorithms:
 
             else:
                ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ### Welch bound for universal bound coherence
@@ -1050,9 +1052,9 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -1082,7 +1084,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
                 ## Legendre bound
@@ -1130,7 +1132,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                    
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -1147,8 +1149,8 @@ class GradientAlgorithms:
 
             else:
                ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                
 
 
@@ -1207,8 +1209,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                      
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -1240,7 +1242,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -1289,7 +1291,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                      
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -1305,8 +1307,8 @@ class GradientAlgorithms:
 
             else:
                ##### Gradient
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -1365,8 +1367,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -1408,8 +1410,8 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ## Legendre bound
@@ -1452,8 +1454,8 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -1470,9 +1472,9 @@ class GradientAlgorithms:
 
 
                 ##### Gradient 
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
-                gr_chi = Gradient(matrix = self.matrix).gr_chi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
+                gr_chi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_chi
 
 
                 ## Legendre bound
@@ -1515,9 +1517,9 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
-                    gr_chi = Gradient(matrix = matrix).gr_chi
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
+                    gr_chi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_chi
 
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -1544,7 +1546,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -1585,7 +1587,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -1603,8 +1605,8 @@ class GradientAlgorithms:
 
 
                 ##### Gradient 
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                
 
                 ## Legendre bound
@@ -1647,8 +1649,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                    
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:
@@ -1676,7 +1678,7 @@ class GradientAlgorithms:
             if self.matrix.types[1] == 'partial':
 
                 ##### Gradient 
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
            
 
 
@@ -1719,7 +1721,7 @@ class GradientAlgorithms:
 
                     ##### Update Gradient 
 
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                      
 
                     ### Calculate the coherence and compare with the Legendre bound
@@ -1737,8 +1739,8 @@ class GradientAlgorithms:
 
 
                 ##### Gradient 
-                gr_theta = Gradient(matrix = self.matrix).gr_theta
-                gr_phi = Gradient(matrix = self.matrix).gr_phi
+                gr_theta = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_theta
+                gr_phi = Gradient(matrix = self.matrix, col_comb = self.col_comb).gr_phi
                 
 
 
@@ -1781,8 +1783,8 @@ class GradientAlgorithms:
                                     angles = angles)
 
                     ##### Update Gradient 
-                    gr_theta = Gradient(matrix = matrix).gr_theta
-                    gr_phi = Gradient(matrix = matrix).gr_phi  
+                    gr_theta = Gradient(matrix = matrix, col_comb = self.col_comb).gr_theta
+                    gr_phi = Gradient(matrix = matrix, col_comb = self.col_comb).gr_phi  
                     
                     ### Calculate the coherence and compare with the Legendre bound
                     if Coherence(matrix.normA) < Coh:

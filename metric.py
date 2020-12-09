@@ -11,6 +11,21 @@ from itertools import combinations
 from scipy.special import lpmv as asLeg
 from numpy import linalg as LA
 
+def params(types, B):
+
+    if types[0] == 'SH':
+        N = B**2
+        col_comb = np.array(list(combinations(range(N),2)))
+    elif types[0] == 'Wigner':
+        N = B*(2*B-1)*(2*B+1)//3  
+        col_comb = np.array(list(combinations(range(N),2)))
+    else:
+        N = 2*B**2 + 4*B
+        col_comb = np.array(np.meshgrid(range(N//2), range(N//2))).T.reshape(-1,2)
+    
+    return N, col_comb
+    ## Generate combination to save computation
+
 #######################################################
 ## Calculate Coherence of a column normalize matrix
 ## Input : Matrix with normalize column
@@ -34,7 +49,7 @@ def Coherence(normA):
 ######################################################
 
 def BoundCoherence(m,N,B):
-    Welch = np.sqrt((N-m)/((N-1.0)*m))
+    Welch = np.sqrt((N-m)/((N-1)*m))
     x = np.linspace(-1,1,m)
     PB1 = asLeg(0,B-1,x)
     PB3 = asLeg(0,B-3,x)

@@ -10,8 +10,9 @@ import numpy.matlib as npmat
 
 class Gradient:
 
-    def __init__(self, matrix):
+    def __init__(self, matrix, col_comb):
         self.matrix = matrix
+        self.col_comb = col_comb
         self.get_gradient()
     
     def get_gradient(self):
@@ -58,11 +59,11 @@ class Gradient:
         dPlk = self.matrix.dPlk
         
         ##################################
-        col_comb = np.array(list(combinations(range(N),2)))
-        comb_lk = [lk[col_comb[:,0],:],lk[col_comb[:,1],:]]
+        #col_comb = np.array(list(combinations(range(N),2)))
+        comb_lk = [lk[self.col_comb[:,0],:],lk[self.col_comb[:,1],:]]
         
         ## Product of combination of degree and order associated Legendre 
-        ProductasLeg = Plk[:,col_comb[:,0]]*Plk[:,col_comb[:,1]] 
+        ProductasLeg = Plk[:,self.col_comb[:,0]]*Plk[:,self.col_comb[:,1]] 
         
         ## diferences order
         k = comb_lk[0][:,1] - comb_lk[1][:,1]
@@ -91,8 +92,8 @@ class Gradient:
         ## Direct calculation of derivativei with respect to theta
         #######################################################################################################
 
-            dPlktotal = (Plk[:,col_comb[:,0]]*dPlk[:,col_comb[:,1]] +
-                         dPlk[:,col_comb[:,0]]*Plk[:,col_comb[:,1]])
+            dPlktotal = (Plk[:,self.col_comb[:,0]]*dPlk[:,self.col_comb[:,1]] +
+                         dPlk[:,self.col_comb[:,0]]*Plk[:,self.col_comb[:,1]])
 
     
         ##################################################################################################
@@ -170,11 +171,11 @@ class Gradient:
         
         
         ### Combination for coherence
-        col_comb = np.array(list(combinations(range(N),2)))
-        comb_lkn = [lkn[col_comb[:,0],:],lkn[col_comb[:,1],:]]
+        self.col_comb = np.array(list(combinations(range(N),2)))
+        comb_lkn = [lkn[self.col_comb[:,0],:],lkn[self.col_comb[:,1],:]]
 
         ## Product of combination degree and orders Wigner d-functions
-        ProductWignerd = wigner_d[:,col_comb[:,0]]*wigner_d[:,col_comb[:,1]]
+        ProductWignerd = wigner_d[:,self.col_comb[:,0]]*wigner_d[:,self.col_comb[:,1]]
 
         ########################################################################
         ## Matrix-based phi and chi
@@ -199,8 +200,8 @@ class Gradient:
         ##################################################################################
         ## Direct derivative with respect to theta
         ##################################################################################
-            dWignerd = (wigner_d[:,col_comb[:,0]]*d_wigner_d[:,col_comb[:,1]] + 
-                        d_wigner_d[:,col_comb[:,0]]*wigner_d[:,col_comb[:,1]])
+            dWignerd = (wigner_d[:,self.col_comb[:,0]]*d_wigner_d[:,self.col_comb[:,1]] + 
+                        d_wigner_d[:,self.col_comb[:,0]]*wigner_d[:,self.col_comb[:,1]])
         
         ##################################################################################
         ## Matrix-based derivative w.r.t to the q-norm
@@ -289,34 +290,49 @@ class Gradient:
         phi = self.matrix.angles[:,1]
         chi = self.matrix.angles[:,2]
         m = self.matrix.m
-        N = self.matrix.N
+        N = self.matrix.N//2
+      
+ 
         lk = self.matrix.deg_order
         dmm_plus = self.matrix.dmm_plus
         dmm_min = self.matrix.dmm_min
         d_dmm_plus = self.matrix.d_dmm_plus
         d_dmm_min  = self.matrix.d_dmm_min
-        norm_A = self.matrix.normA
-        
-        
+        norm_A1 = self.matrix.normA[:,0:N]
+        norm_A2 = self.matrix.normA[:,N::]
+        normalize1 = self.matrix.normalize[0:N]
+        normalize2 = self.matrix.normalize[N::]
+         
         #### Combination    
-        col_comb = np.array(list(combinations(range(2*N),2)))
-        ProductCoh = norm_A[:,col_comb[:,0]]*np.conj(norm_A[:,col_comb[:,1]])
-        normalization = self.matrix.normalize[col_comb[:,0]]*self.matrix.normalize[col_comb[:,1]]
-       
+        col_comb3 = self.col_comb
+        idx_12 = np.nonzero(col_comb3[:,1] > col_comb3[:,0])[0]
+        #col_comb = np.array(list(combinations(range(2*N),2)))
         
+        ## ProductCoh3
+        ProductCoh3 = norm_A1[:,col_comb3[:,0]]*np.conj(norm_A2[:,col_comb3[:,1]])
+        ProductCoh2 = norm_A1[:,col_comb3[idx_12,0]]*np.conj(norm_A1[:,col_comb3[idx_12,1]])
+        ProductCoh1 = norm_A2[:,col_comb3[idx_12,0]]*np.conj(norm_A2[:,col_comb3[idx_12,1]])
+        
+        norm3 = normalize1[col_comb3[:,0]]*normalize2[col_comb3[:,1]]
+        norm2 = normalize1[col_comb3[idx_12,0]]*normalize1[col_comb3[idx_12,1]]
+        norm1 = normalize2[col_comb3[idx_12,0]]*normalize2[col_comb3[idx_12,1]]
+       
+        ##
+        ProductCohTot = np.concatenate((np.sum(ProductCoh2,0), np.sum(ProductCoh3,0), 
+                                        np.sum(ProductCoh1,0)), axis = 0)
         ## Derivative of q norm
         q = 8.0
 
-        Qnorm = (q/2.0)*np.abs(np.sum(ProductCoh,0))**(q-2)
+        Qnorm = (q/2.0)*np.abs(ProductCohTot)**(q-2) # np.abs(np.sum(ProductCoh,0))
 
 
-        Qnorm1 = (1/q)*np.sum(np.abs(np.sum(ProductCoh,0))**q)**((1/q)-1)
+        Qnorm1 = (1/q)*np.sum(np.abs(ProductCohTot)**q)**((1/q)-1)
 
 
     
 
         ## Case 3 (All possible_combination of two bases)
-        col_comb3 = np.array(np.meshgrid(range(N), range(N))).T.reshape(-1,2)
+       # col_comb3 = np.array(np.meshgrid(range(N), range(N))).T.reshape(-1,2)
         comb_lk3 = [lk[col_comb3[:,0],:],lk[col_comb3[:,1],:]]
         ## Combination product Wigner small d
         d1 = dmm_plus[:,col_comb3[:,0]]*dmm_plus[:,col_comb3[:,1]]
@@ -386,7 +402,7 @@ class Gradient:
             ## Case2 (coherence inside second basis, negative and negative)
             ############################################################################
 
-            idx_12 = np.nonzero(col_comb3[:,1] > col_comb3[:,0])[0]
+            #idx_12 = np.nonzero(col_comb3[:,1] > col_comb3[:,0])[0]
 
             ## Real
             case2_real = (c1[:,idx_12]*d1[:,idx_12] + c1[:,idx_12]*d4[:,idx_12] -
@@ -478,12 +494,14 @@ class Gradient:
             ## Total all cases (DONT FORGET NORMALIZATION)
             #################################################################################
 
-            gr_theta_total = (np.concatenate((gr_theta_case1,gr_theta_case3, gr_theta_case2),axis = 1)/
-                              normalization[np.newaxis,:])
+            gr_theta_total = (np.concatenate((gr_theta_case1/norm1[np.newaxis,:],
+                                              gr_theta_case3/norm3[np.newaxis,:], 
+                                              gr_theta_case2/norm2[np.newaxis,:]),axis = 1))
              
             
-            gr_phi_total = (np.concatenate((gr_phi_case1, gr_phi_case3, gr_phi_case2), axis = 1)/
-                            normalization[np.newaxis,:])
+            gr_phi_total = (np.concatenate((gr_phi_case1/norm1[np.newaxis,:], 
+                                            gr_phi_case3/norm3[np.newaxis,:], 
+                                            gr_phi_case2/norm2[np.newaxis,:]), axis = 1))
             
            
             ################################################################################
@@ -512,7 +530,7 @@ class Gradient:
             ## Case2 (coherence inside second basis, negative and negative)
             ############################################################################
 
-            idx_12 = np.nonzero(col_comb3[:,1] > col_comb3[:,0])[0]
+            #idx_12 = np.nonzero(col_comb3[:,1] > col_comb3[:,0])[0]
 
             ## Real
             case2_real = (c1[:,idx_12]*d1[:,idx_12] + c1[:,idx_12]*d4[:,idx_12] -
@@ -581,8 +599,9 @@ class Gradient:
             ## Total all cases 
             #################################################################################
 
-            gr_phi_total = (np.concatenate((gr_phi_case1, gr_phi_case3, gr_phi_case2), axis = 1)/
-                            normalization[np.newaxis,:])
+            gr_phi_total = (np.concatenate((gr_phi_case1/norm1[np.newaxis,:], 
+                                            gr_phi_case3/norm3[np.newaxis,:], 
+                                            gr_phi_case2/norm2[np.newaxis,:]), axis = 1))
             
             
             ################################################################################

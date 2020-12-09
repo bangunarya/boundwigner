@@ -56,8 +56,8 @@ class Matrix:
             self.wignerDfunctions()
 
         else:
-            self.N = self.B**2 + 2*self.B
-            lk = np.zeros((self.N,2), dtype = np.float64)
+            self.N = 2*self.B**2 + 4*self.B
+            lk = np.zeros((self.N//2,2), dtype = np.float64)
             idx_beg = 0
             for l in np.arange(1,self.B + 1):
                 k = range(-l,l+1)
@@ -221,22 +221,22 @@ class Matrix:
         ############################################################################
  
         ## Normalization
-        normalize1 = np.zeros((self.N), dtype = np.float64)
-        normalize2 = np.zeros((self.N), dtype = np.float64)
+        normalize1 = np.zeros((self.N//2), dtype = np.float64)
+        normalize2 = np.zeros((self.N//2), dtype = np.float64)
 
         ### Alocate the matrix
-        Basis_1 = np.zeros((self.m, self.N), dtype = np.complex64)
+        Basis_1 = np.zeros((self.m, self.N//2), dtype = np.complex64)
         Basis_2 = np.copy(Basis_1)
         
         norm_Basis_1 = np.copy(Basis_1)
         norm_Basis_2 = np.copy(Basis_2)
 
 
-        dmm_plus = np.zeros((self.m, self.N), dtype = np.float64)
-        dmm_min  = np.zeros((self.m, self.N), dtype = np.float64)
+        dmm_plus = np.zeros((self.m, self.N//2), dtype = np.float64)
+        dmm_min  = np.zeros((self.m, self.N//2), dtype = np.float64)
 
         ### allocate derivative
-        d_dmm_plus = np.zeros((self.m, self.N), dtype = np.float64)
+        d_dmm_plus = np.zeros((self.m, self.N//2), dtype = np.float64)
         d_dmm_min = np.copy(d_dmm_plus)
         
         ## Angles
@@ -253,7 +253,7 @@ class Matrix:
             return eta
 
 
-        for ii in range(self.N):
+        for ii in range(self.N//2):
             Normalization = math.sqrt((2.0*self.deg_order[ii,0]+1)/(8.0*np.pi**2))
             
             #########################################################################
@@ -324,9 +324,9 @@ class Matrix:
             ## Generate Wigner D for s = 1 (TE) and s = 2 (TM)
             Basis_1[:,ii] = (np.exp(1j*chi)*dmm_plus[:,ii] + np.exp(-1j*chi)*
                              dmm_min[:,ii])*np.exp(1j*self.deg_order[ii,1]*phi)
-    
+            
             norm_Basis_1[:,ii] = Basis_1[:,ii]/LA.norm(Basis_1[:,ii])
-
+            
 
             Basis_2[:,ii] = (np.exp(1j*chi)*dmm_plus[:,ii] - np.exp(-1j*chi)*
                              dmm_min[:,ii])*np.exp(1j*self.deg_order[ii,1]*phi)
@@ -352,3 +352,4 @@ class Matrix:
         self.dmm_plus = dmm_plus
         self.dmm_min = dmm_min
         self.normalize = normalize
+       
