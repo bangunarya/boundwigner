@@ -103,7 +103,7 @@ class SamplingPoints:
     def hammersleysampling(self):
         ############################################################
         ## Generate van der Corput sequence according to 
-        ############:s/foo/bar/g################################################
+        ########################################################
         def vdcorput(k,b):
             s = np.zeros(k+1)
             for i in np.arange(k)+1:
@@ -170,7 +170,11 @@ class SamplingPoints:
         
     def initialsnf(self):
         theta = np.random.rand(self.m)*np.pi
-       # theta = np.arccos(2.0*np.random.rand(self.m) - 1)
+        #theta = np.arccos(2.0*np.random.rand(self.m) - 1)
+        if self.types[1] == 'partial':
+            theta = np.arccos(np.linspace(-1,1,self.m)) 
+        #
+        
         phi   = np.random.rand(self.m)*2.0*np.pi
         chi = (np.arange(self.m) % 2)*(np.pi/2)
         
